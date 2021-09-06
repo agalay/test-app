@@ -56,12 +56,8 @@ export default {
         this.data[prop] = post[prop];
       }
     },
-    async update(postID) {
-      const post = this.posts.find(({id}) => id === postID)
-      console.log(post)
-    },
-    async updateOrCreate(id) {
-      if(this.action === 'add') {
+    async updateOrCreate() {
+      if(this.action === 'Add') {
         try {
           let response = await fetch('http://localhost:8000/api/posts', {
             method: 'POST',
@@ -89,6 +85,7 @@ export default {
           alert(err);
         }
       } else {
+        let id = this.data.id;
         try {
           let response = await fetch(`http://localhost:8000/api/posts/${id}`, {
             method: 'PUT',
@@ -101,13 +98,13 @@ export default {
           let { status, post } = await response.json();
 
           if(status) {
-            this.posts.push(post)
+            this.posts = this.posts.map(el => el.id !== post.id ? el : post)
             this.data = {
               title : null,
               description : null
             }
-
-            alert('Post added!')
+            this.action = 'Add'
+            alert('Post updated!')
           } else {
             throw new Error('Something went wrong!');
           }

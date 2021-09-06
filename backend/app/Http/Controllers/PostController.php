@@ -70,12 +70,15 @@ class PostController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Post $post)
     {
         $post->update($request->all());
-        return response()->json(['status' => true]);
+        return response()->json([
+            'status' => true,
+            'post' => $post
+        ]);
     }
 
     /**
