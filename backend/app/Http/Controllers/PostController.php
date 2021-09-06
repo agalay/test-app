@@ -36,8 +36,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        Post::create($request->all());
-        return response()->json(['status' => true]);
+        $post = Post::create($request->all());
+        return response()->json([
+            'status' => true,
+            'post' => $post
+        ]);
     }
 
     /**
@@ -84,6 +87,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response()->noContent();
+        return response()->json(['status' => true]);
     }
 }
